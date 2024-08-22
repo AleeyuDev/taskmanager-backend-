@@ -1,20 +1,27 @@
 {
-    "builds": [{
-        |"src" :"taskmanager/wsgi.py",
-        |"use" :"@vercel/python",
-        |"config" : {"maxLambdaSize": "15mb", "runtime": "python3.11.0"}
-}], 
-"routes": [
+  "version": 2,
+  "builds": [
     {
-    "src": "/(.*)",
-    "dest": "taskmanager/wsgi.py" 
+      "src": "taskmanager/manage.py",
+      "use": "@vercel/python",
+      "config": { "maxLambdaSize": "50mb" }
+    },
+    {
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "frontend/dist"
+      }
     }
-]
-
-
-
-
-
-
-
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "taskmanager/manage.py"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/$1"
+    }
+  ]
 }
